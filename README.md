@@ -1,1 +1,1 @@
-# MERN-ChatMessenger
+# MERN-SocialMediaApp
