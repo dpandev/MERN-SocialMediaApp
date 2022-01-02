@@ -67,3 +67,7 @@
   font-weight: 500;
   cursor: pointer;
 }
+.register-submit-button>a:visited {
+  text-decoration: none;
+  color: #fff;
+}
