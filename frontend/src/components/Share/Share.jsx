@@ -5,7 +5,7 @@ import { UserContext } from '../../Context/UserContext'
 import axios from 'axios'
 
 export default function Share() {
-  const {user} = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const PF = process.env.REACT_APP_PUBLIC_FOLDER
   const desc = useRef()
   const [file, setFile] = useState(null)

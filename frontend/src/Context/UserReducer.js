@@ -38,13 +38,13 @@ const UserReducer = (state, action) => {
       }
     case "LOGOUT":
       return {
-          user:localStorage.setItem("user", null),
-          isFetching:false,
-          error:false
+          user: localStorage.setItem("user", null),
+          isFetching: false,
+          error: false
       }
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default UserReducer;
+export default UserReducer

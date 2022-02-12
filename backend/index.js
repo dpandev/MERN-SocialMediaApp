@@ -7,6 +7,8 @@ const morgan = require('morgan')
 const userRoute = require('./routes/users')
 const authRoute = require('./routes/auth')
 const postRoute = require('./routes/posts')
+const conversationRoute = require('./routes/conversations')
+const messageRoute = require('./routes/messages')
 const path = require('path')
 
 dotenv.config()
@@ -16,7 +18,8 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopol
   .catch((err) => {
     console.error(err);
   })
-  app.use("/images", express.static(path.join(__dirname, "public/images")))
+
+app.use("/images", express.static(path.join(__dirname, "public/images")))
 
 //middleware
 app.use(express.json())
@@ -26,6 +29,8 @@ app.use(morgan("common"))
 app.use('/api/users', userRoute)
 app.use('/api/auth', authRoute)
 app.use('/api/posts', postRoute)
+app.use('/api/conversations', conversationRoute)
+app.use('/api/messages', messageRoute)
 
 
 app.listen(8800, () => {

@@ -5,44 +5,52 @@ import axios from 'axios'
 import { useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../../Context/UserContext'
-import { Add, Remove } from "@mui/icons-material"
+import { Add, Remove } from '@mui/icons-material'
 
 export default function Rightbar({ user }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER
   const [friends, setFriends] = useState([])
   const { user: currentUser, dispatch } = useContext(UserContext)
-  const [followed, setFollowed] = useState(
-    currentUser.followings.includes(user?._id)
-  )
+  const [followed, setFollowed] = useState(currentUser.followings.includes(user?._id))
+  console.log("state:" + followed)
+  //state is set on component load, but is not changed once axios data is recieved
 
-  useEffect(() => {
-    const getFriends = async () => {
+  useEffect(() => {//user in localStorage needed to be cleared to reset followings count
+    const getFriends = async () => {//error, getting undefined user first time loading
+      console.log("user:" + user._id)
+      console.log("isFollowed:"+followed)
+      console.log("followings:" + currentUser.followings)//why does this return more objects than is present in database?
+      console.log("userIsFollowing:" + currentUser.followings.includes(user?._id))
+      console.log("userFollowers:" + user.followers)
       try {
-        const friendsList = await axios.get("/users/friends/" + currentUser._id)
+        const friendsList = await axios.get("/users/friends/" + user._id)
         setFriends(friendsList.data)
       } catch(err) {
         console.log(err)
       }
     }
     getFriends()
-  }, [currentUser])
+  }, [user, currentUser])
 
   const handleClick = async () => {
     try {
       if (followed) {
         await axios.put(`/users/${user._id}/unfollow`, {
           userId: currentUser._id,
-        });
+        })
+        console.log("successfully reached 1")
         dispatch({ type: "UNFOLLOW", payload: user._id })
       } else {
         await axios.put(`/users/${user._id}/follow`, {
-          userId: currentUser._id,
-        });
+          userId: currentUser._id
+        })
+        console.log("successfully reached 2")
         dispatch({ type: "FOLLOW", payload: user._id })
       }
+      console.log("successfully reached final")
       setFollowed(!followed)
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
   }
 
@@ -73,7 +81,8 @@ export default function Rightbar({ user }) {
           <button className="rightbar-follow-btn" onClick={handleClick}>
             {followed ? "Unfollow" : "Follow"}
             {followed ? <Remove /> : <Add />}
-          </button>
+            {console.log("rightbarUser:" + user._id)}
+          </button>//log returns undefined user, maybe user (of profile) isnt loaded before the page is?
         )}
         <h4 className="rightbar-title">User information</h4>
         <div className="rightbar-info">

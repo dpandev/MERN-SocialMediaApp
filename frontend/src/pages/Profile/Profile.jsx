@@ -11,10 +11,13 @@ export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER
   const [user, setUser] = useState({})
   const username = useParams().username
+  console.log("proTop: " + username)
 
   useEffect(() => {
     const fetchUser = async () => {
+      console.log("fetchProUser:" + username)
       const res = await axios.get(`/users?username=${username}`)
+      console.log(res.data)
       setUser(res.data)
     }
     fetchUser()
@@ -50,7 +53,7 @@ export default function Profile() {
           </div>
           <div className="profile-right-bottom">
             <Feed username={username} />
-            <Rightbar profile user={user} />
+            <Rightbar user={user} />
           </div>
         </div>
       </div>

@@ -22,6 +22,8 @@ services:
         volumes:
             - ./backend:/backend
             - /backend/node_modules
+        environment:
+            - CHOKIDAR_USEPOLLING=true
         depends_on:
             - mongodb
         networks:
